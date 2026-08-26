@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class ImageProcessing {
+public class ImageProcessing2 {
 
     public static BufferedImage loadImage(String filePath) throws IOException {
         File file = new File(filePath);
@@ -18,8 +18,9 @@ public class ImageProcessing {
         ImageIO.write(image, format, outputFile);
     }
 
-    // Grayscale conversion using weighted RGB (matches human eye sensitivity per channel)
-    public static BufferedImage toGrayscale(BufferedImage original) {
+    // Removes a near-white/light background, replacing it with pure white or pure black.
+    // toBlack = true -> background becomes pure black. toBlack = false -> pure white.
+    public static BufferedImage removeBackground(BufferedImage original, boolean toBlack) {
         int width = original.getWidth();
         int height = original.getHeight();
 
@@ -28,14 +29,17 @@ public class ImageProcessing {
 
                 Color c = new Color(original.getRGB(j, i));
 
-                int red = (int) (c.getRed() * 0.299);
-                int green = (int) (c.getGreen() * 0.587);
-                int blue = (int) (c.getBlue() * 0.114);
+                int red = c.getRed();
+                int green = c.getGreen();
+                int blue = c.getBlue();
 
-                int gray = red + green + blue;
-                Color newColor = new Color(gray, gray, gray);
+                // Treat light, low-contrast pixels (the textured white background) as background
+                boolean isBackground = (red > 190 && green > 190 && blue > 190);
 
-                original.setRGB(j, i, newColor.getRGB());
+                if (isBackground) {
+                    Color replacement = toBlack ? Color.BLACK : Color.WHITE;
+                    original.setRGB(j, i, replacement.getRGB());
+                }
             }
         }
 
