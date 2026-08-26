@@ -8,7 +8,7 @@ public class ProblemSolver2 {
 
     public static void main(String[] args) {
         try {
-            BufferedImage image = ImageProcessing2.loadImage("input.jpg");
+            BufferedImage image = ImageProcessing2.loadImage("flower.jpg");
 
             // Change to false if you want pure white background instead
             boolean makeBackgroundBlack = true;

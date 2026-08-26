@@ -8,7 +8,7 @@ public class ProblemSolver {
 
     public static void main(String[] args) {
         try {
-            BufferedImage image = ImageProcessing.loadImage("input.jpg");
+            BufferedImage image = ImageProcessing.loadImage("jb.png");
             BufferedImage gray = ImageProcessing.toGrayscale(image);
             ImageProcessing.saveImage(gray, "grayscale.jpg", "jpg");
 

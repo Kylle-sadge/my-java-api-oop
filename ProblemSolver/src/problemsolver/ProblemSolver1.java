@@ -8,7 +8,7 @@ public class ProblemSolver1 {
 
     public static void main(String[] args) {
         try {
-            BufferedImage image = ImageProcessing1.loadImage("input.jpg");
+            BufferedImage image = ImageProcessing1.loadImage("flower.jpg");
             BufferedImage blue = ImageProcessing1.recolorToBlue(image);
             ImageProcessing1.saveImage(blue, "output_blue.jpg", "jpg");
 
