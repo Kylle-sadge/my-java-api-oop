@@ -8,9 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Notepad-style frame: a text area with Load, Save, and Close buttons.
- * Load reads a .txt file's contents into the text area.
- * Save writes the current text to a .txt file on disk.
+ * Notepad-style frame: a text area with Load, Save, and Close buttons,
+ * plus a top menu bar for navigating to other frames.
  *
  * @author kylle
  */
@@ -22,6 +21,9 @@ public class MessageFrame extends JFrame {
         setTitle("Notepad");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(true);
+
+        // ---- menu bar ----
+        setJMenuBar(buildMenuBar());
 
         // ---- text area with scroll support ----
         txtNotepad = new JTextArea();
@@ -54,6 +56,35 @@ public class MessageFrame extends JFrame {
 
         setSize(420, 320);
         setLocationRelativeTo(null); // center on screen
+    }
+
+    private JMenuBar buildMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu navigateMenu = new JMenu("Go To");
+
+        JMenuItem mainMenuItem = new JMenuItem("Main Menu");
+        JMenuItem calculatorItem = new JMenuItem("Calculator");
+        JMenuItem closeItem = new JMenuItem("Close This Window");
+
+        mainMenuItem.addActionListener(evt -> {
+            new MainMenu1().setVisible(true);
+            dispose(); // close this window when navigating away
+        });
+
+        calculatorItem.addActionListener(evt -> {
+            new CalcFrame().setVisible(true);
+            dispose();
+        });
+
+        closeItem.addActionListener(evt -> dispose());
+
+        navigateMenu.add(mainMenuItem);
+        navigateMenu.add(calculatorItem);
+        navigateMenu.addSeparator();
+        navigateMenu.add(closeItem);
+
+        menuBar.add(navigateMenu);
+        return menuBar;
     }
 
     private void onLoad() {

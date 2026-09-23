@@ -5,21 +5,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  * Hand-written Swing calculator — no NetBeans GUI Builder used.
- * Drop this file straight into your Source Packages (as its own .java file,
- * matching the class name to the file name) and run it directly.
+ * Includes a "Go To" menu bar for navigating to other frames.
  */
 public class CalculatorFrame extends JFrame {
 
     private JTextField txtDisplay;
 
-    //calc state logic-
+    // ---- calc state logic ----
     private double firstOperand = 0;
     private String operator = "";
     private boolean startNewNumber = true;
@@ -29,14 +23,17 @@ public class CalculatorFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        //disply nums n inputs
+        // ---- menu bar ----
+        setJMenuBar(buildMenuBar());
+
+        // ---- display ----
         txtDisplay = new JTextField("0");
         txtDisplay.setEditable(false);
         txtDisplay.setHorizontalAlignment(JTextField.RIGHT);
         txtDisplay.setFont(new Font("Segoe UI", Font.PLAIN, 32));
         txtDisplay.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        //4x5 buttons
+        // ---- 5x4 buttons ----
         JPanel buttonPanel = new JPanel(new GridLayout(5, 4, 4, 4));
 
         String[] labels = {
@@ -68,7 +65,37 @@ public class CalculatorFrame extends JFrame {
         setLocationRelativeTo(null); // center on screen
     }
 
-    // ---- single dispatcher, routes to the same helper methods you already had ----
+    // ---- menu bar ----
+    private JMenuBar buildMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu navigateMenu = new JMenu("Go To");
+
+        JMenuItem mainMenuItem = new JMenuItem("Main Menu");
+        JMenuItem messageItem = new JMenuItem("Message");
+        JMenuItem closeItem = new JMenuItem("Close This Window");
+
+        mainMenuItem.addActionListener(evt -> {
+            new MainMenu1().setVisible(true);
+            dispose();
+        });
+
+        messageItem.addActionListener(evt -> {
+            new MessageFrame().setVisible(true);
+            dispose();
+        });
+
+        closeItem.addActionListener(evt -> dispose());
+
+        navigateMenu.add(mainMenuItem);
+        navigateMenu.add(messageItem);
+        navigateMenu.addSeparator();
+        navigateMenu.add(closeItem);
+
+        menuBar.add(navigateMenu);
+        return menuBar;
+    }
+
+    // ---- single dispatcher, routes to the helper methods below ----
     private void onButtonClick(ActionEvent e) {
         String cmd = ((JButton) e.getSource()).getText();
 
@@ -90,7 +117,7 @@ public class CalculatorFrame extends JFrame {
         }
     }
 
-    // ---- helper methods (fill in / adjust to match your instructor's versions) ----
+    // ---- helper methods ----
 
     private void appendDigit(String digit) {
         if (startNewNumber) {
@@ -185,6 +212,7 @@ public class CalculatorFrame extends JFrame {
         return String.valueOf(value);
     }
 
+    // ---- entry point ----
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             CalculatorFrame frame = new CalculatorFrame();
