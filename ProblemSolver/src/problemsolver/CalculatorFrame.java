@@ -1,3 +1,10 @@
+package problemsolver;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +19,7 @@ public class CalculatorFrame extends JFrame {
 
     private JTextField txtDisplay;
 
-    // ---- calculator state/logic (same shape as the helper methods you described) ----
+    //calc state logic-
     private double firstOperand = 0;
     private String operator = "";
     private boolean startNewNumber = true;
@@ -22,14 +29,14 @@ public class CalculatorFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        // ---- display ----
+        //disply nums n inputs
         txtDisplay = new JTextField("0");
         txtDisplay.setEditable(false);
         txtDisplay.setHorizontalAlignment(JTextField.RIGHT);
         txtDisplay.setFont(new Font("Segoe UI", Font.PLAIN, 32));
         txtDisplay.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // ---- button grid: 5 rows x 4 columns ----
+        //4x5 buttons
         JPanel buttonPanel = new JPanel(new GridLayout(5, 4, 4, 4));
 
         String[] labels = {
