@@ -4,53 +4,53 @@ import java.util.Scanner;
 
 public class ProblemSolver4 {
 
-    // Custom checked exception: thrown when input is valid text but not a float format
-    static class NotAFloatException extends Exception {
-        public NotAFloatException(String message) {
+    // Custom checked exception: thrown when input is not a valid whole number
+    static class NotAnIntegerException extends Exception {
+        public NotAnIntegerException(String message) {
             super(message);
         }
     }
 
-    // Validates that the input is written as a float (must contain a decimal point)
-    static double parseStrictFloat(String input) throws NotAFloatException {
+    // Validates that the input is a whole number (no decimal point allowed)
+    static int parseStrictInt(String input) throws NotAnIntegerException {
         String trimmed = input.trim();
 
-        if (!trimmed.contains(".")) {
-            throw new NotAFloatException("[" + trimmed + "] is not in float format. Use a decimal point, e.g. "
-                    + trimmed + ".0");
+        if (trimmed.contains(".")) {
+            throw new NotAnIntegerException("[" + trimmed + "] is a decimal, not an integer. "
+                    + "Enter a whole number, e.g. 2");
         }
 
         try {
-            return Double.parseDouble(trimmed);
+            return Integer.parseInt(trimmed);
         } catch (NumberFormatException nfe) {
-            throw new NotAFloatException("[" + trimmed + "] is not a valid number.");
+            throw new NotAnIntegerException("[" + trimmed + "] is not a valid integer.");
         }
     }
 
-    // Keeps asking until a valid float is entered - an error never exits the program
-    static double askForFloat(Scanner sc, int position) {
+    // Keeps asking until a valid integer is entered - an error never exits the program
+    static int askForInt(Scanner sc, int position) {
         while (true) {
-            System.out.print("Enter float #" + position + " (e.g. 2.0): ");
+            System.out.print("Enter integer #" + position + " (e.g. 2): ");
             String input = sc.nextLine();
 
             try {
-                return parseStrictFloat(input);
-            } catch (NotAFloatException e) {
-                System.err.println("Error: " + e.getMessage() + " Please try again.");
+                return parseStrictInt(input);
+            } catch (NotAnIntegerException e) {
+                System.err.println("Error: " + e.getMessage() + ". Please try again.");
             }
         }
     }
 
     public static void main(String args[]) {
-        double sum = 0;
+        int sum = 0;
         int counted = 0;
 
-        // Part 1: command-line arguments (original behavior, now float-strict)
+        // Part 1: command-line arguments (original behavior, now with custom exception)
         for (String arg : args) {
             try {
-                sum += parseStrictFloat(arg);
+                sum += parseStrictInt(arg);
                 counted++;
-            } catch (NotAFloatException e) {
+            } catch (NotAnIntegerException e) {
                 System.err.println(e.getMessage() + " It will not be included in the sum.");
             }
         }
@@ -60,20 +60,21 @@ public class ProblemSolver4 {
         int count = 0;
 
         while (true) {
-            System.out.print("How many additional floats do you want to add? ");
+            System.out.print("How many additional integers do you want to add? ");
             try {
-                count = Integer.parseInt(sc.nextLine().trim());
+                count = parseStrictInt(sc.nextLine());
                 if (count < 0) {
-                    throw new NumberFormatException("negative");
+                    System.err.println("Error: please enter 0 or greater.");
+                    continue;
                 }
                 break;
-            } catch (NumberFormatException nfe) {
-                System.err.println("Error: please enter a whole number (0 or greater).");
+            } catch (NotAnIntegerException e) {
+                System.err.println("Error: " + e.getMessage() + ". Please try again.");
             }
         }
 
         for (int i = 1; i <= count; i++) {
-            sum += askForFloat(sc, i);
+            sum += askForInt(sc, i);
             counted++;
         }
 
