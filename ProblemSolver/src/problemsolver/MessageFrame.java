@@ -72,7 +72,7 @@ public class MessageFrame extends JFrame {
         });
 
         calculatorItem.addActionListener(evt -> {
-            new CalcFrame().setVisible(true);
+            new CalculatorFrame().setVisible(true);
             dispose();
         });
 
